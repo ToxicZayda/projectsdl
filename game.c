@@ -101,6 +101,7 @@ int MenuOp()
 int Game()
 {
     masque = NULL;
+    Hero hero1;
     SDL_Rect positionMasque, pos [8];
     int X, Y;
     Uint32 couleur_obstacle;
@@ -114,25 +115,25 @@ int Game()
     enigme E;
     Enemies enemies;
     enemies.nombre = 3;
-    enemies.enemy[0] = init_enemy(2,660,340);
-    enemies.enemy[1] = init_enemy(2,1560,340);
-    enemies.enemy[2] = init_enemy(2,2460,340);
+    enemies.enemy[0] = init_enemy(20,660,340);
+    enemies.enemy[1] = init_enemy(20,1560,340);
+    enemies.enemy[2] = init_enemy(20,2460,340);
     background = init_back("back.png");
-    intervalle1 = 0, intervalle2 = 0, decalage = 0, destination =  0, continuer = 1,position_absolue =100;
-    init_hero(&hero);
+    intervalleH1 = 0, intervalleH2 = 0,intervalleE1 = 0, intervalleE2 = 0, decalage = 0, destination =  0, continuer = 1,position_absolue =100;
+    init_hero(&hero1);
     SDL_Event event;
     SDL_EnableKeyRepeat(100, 100);
 
     while (continuer)
     {
         aff_back(background);
-        aff_hero(&hero);
-        getInput(event, &continuer, &background);
-        collision_ennemy(&enemies);
+        aff_hero((&hero1));
+        getInput(event, &continuer, &background,&hero1);
+        collision_ennemy(&enemies,&hero1);
         Deplacer(&enemies);
         aff_enemies(&enemies);
         SDL_Flip(ecran);
-        if(CollisionParfaite()!=0)
+        if(CollisionParfaite(hero1)!=0)
         {
             activer_enigme = 1;
             continuer = 0;
@@ -180,7 +181,7 @@ int Game()
     }
     SDL_FreeSurface(background.imageDeFond);
     free_enemy(&enemies);
-    free_hero();
+    free_hero(&hero1);
     SDL_FreeSurface(masque);
     TTF_Quit();
     SDL_FreeSurface(ecran);

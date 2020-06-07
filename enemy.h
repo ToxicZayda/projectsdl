@@ -1,6 +1,7 @@
 #ifndef ENEMY_H_INCLUDED
 #define ENEMY_H_INCLUDED
 #include "entity.h"
+#include "hero.h"
 
 typedef struct
 {
@@ -18,6 +19,6 @@ Enemy init_enemy(int v,int x,int y);
 void aff_enemies(Enemies *enemies);
 void free_enemy(Enemies *enemies);
 void Deplacer(Enemies *enemies);
-void collision_ennemy(Enemies *enemies);
-
+void collision_ennemy(Enemies *enemies,Hero *hero);
+void Animation_Enemy(Enemies *enemies);
 #endif 

@@ -6,15 +6,16 @@
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <time.h>
-#include <SDL/SDL_mixer.h>
+
 
 typedef struct enigmes
 {
     SDL_Surface *image;
     SDL_Rect positionE;
     char corr;
-
 }enigmes;
+
+int done;
 
 typedef struct photo
 {
@@ -23,9 +24,7 @@ typedef struct photo
     
 }photo;
  
- SDL_Surface *ecran;
  SDL_Event event;
-Mix_Music *music;
 
 photo init_photo(char images[]); 
 
@@ -38,5 +37,5 @@ int Aleatoire();
 void aff_enigmes(enigmes e[],int num,SDL_Surface *ecran);
 
 int get_Input(SDL_Event event, int *continuer,enigmes e,int num);
-
+void Interface_Enigme();
 #endif 

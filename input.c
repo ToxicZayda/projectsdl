@@ -1,32 +1,32 @@
 #include "hero.h"
 #include "sdl.h"
-void Animation_Personnage()
+void Animation_Personnage(Hero *hero)
 {
     char direction;
 
-    if(!hero.air && !hero.mouvement.down && !hero.mouvement.up)
-        hero.frame++;
+    if(!hero->air && !hero->mouvement.down && !hero->mouvement.up && hero->frame!=9)
+        hero->frame++;
 
-    if (hero.mouvement.left)
+    if (hero->mouvement.left)
     {
-        if(hero.frame <= 4 || hero.frame >= 9)
-            hero.frame = 5;
+        if(hero->frame <= 4 || hero->frame >= 9)
+            hero->frame = 5;
         direction = 'l';
     }
-    if (hero.mouvement.right )
+    if (hero->mouvement.right )
     {
-        if(hero.frame >= 4)
-            hero.frame = 0;
+        if(hero->frame >= 4)
+            hero->frame = 0;
         direction = 'r';
     }
 
     if(direction != 'r' && direction != 'l')
-        direction = hero.direction;
+        direction = hero->direction;
 
-    if(hero.direction != direction && !hero.air )
+    if(hero->direction != direction && !hero->air )
     {
-        hero.frame = 4;
-        hero.direction = direction;
+        hero->frame = 4;
+        hero->direction = direction;
     }
 
 }
@@ -45,7 +45,7 @@ SDL_Color GetPixel(int X, int Y)
 }
 
 
-int CollisionParfaite ()
+int CollisionParfaite (Hero hero)
 {
     SDL_Rect pos [1] ;
     int W, H, X, Y, i, collision;
@@ -64,36 +64,36 @@ int CollisionParfaite ()
 
 
 
-   /* pos[0].x = X;
-    pos[0].y = Y;
+    /* pos[0].x = X;
+     pos[0].y = Y;
 
 
-    pos[1].x = X + W / 2;
-    pos[1].y = Y;
+     pos[1].x = X + W / 2;
+     pos[1].y = Y;
 
 
-    pos[2].x = X + W;
-    pos[2].y = Y;
+     pos[2].x = X + W;
+     pos[2].y = Y;
 
 
-    pos[3].x = X ;
-    pos[3].y = Y + H / 2;
+     pos[3].x = X ;
+     pos[3].y = Y + H / 2;
 
 
-    pos[4].x = X;
-    pos[4].y = Y + H;
+     pos[4].x = X;
+     pos[4].y = Y + H;
 
 
-    pos[5].x = X + W / 2;
-    pos[5].y = Y + H;
+     pos[5].x = X + W / 2;
+     pos[5].y = Y + H;
 
 
-    pos[6].x = X + W;
-    pos[6].y = Y + H;
+     pos[6].x = X + W;
+     pos[6].y = Y + H;
 
 
-    pos[7].x = X + W;
-    pos[7].y = Y + H / 2; // initialiser les 8 pos*/
+     pos[7].x = X + W;
+     pos[7].y = Y + H / 2; // initialiser les 8 pos*/
     pos[0].x = X + W;
     pos[0].y = Y + H / 2;
 
@@ -114,9 +114,9 @@ int CollisionParfaite ()
 
 }
 
-void Deplacer_Hero(int vitesse)
+void Deplacer_Hero(int vitesse,Hero *hero)
 {
-    hero.e.position.x += vitesse;
+    hero->e.position.x += vitesse;
     position_absolue += vitesse;
 }
 void scrolling(Background *background, int vitesse)
@@ -125,133 +125,139 @@ void scrolling(Background *background, int vitesse)
     position_absolue -= vitesse;
     decalage = vitesse;
 }
-void mouvement(SDL_Event event, Background *background)
+void mouvement(SDL_Event event, Background *background,Hero *hero)
 {
-    intervalle2 = SDL_GetTicks();
+    intervalleH2 = SDL_GetTicks();
     decalage = 0;
     SDLKey key = event.key.keysym.sym;
-    if((key == SDLK_UP || key == SDLK_LEFT || key == SDLK_RIGHT || (hero.mouse_clicked )) && intervalle2 - intervalle1 > 100)
+    if((key == SDLK_UP || key == SDLK_LEFT || key == SDLK_RIGHT || (hero->mouse_clicked )) && intervalleH2 - intervalleH1 > 110)
     {
-        intervalle1 = intervalle2;
-        Animation_Personnage();
-        CollisionParfaite();
-        if (hero.mouvement.left)
+        intervalleH1 = intervalleH2;
+        Animation_Personnage(hero);
+        CollisionParfaite((*hero));
+        if (hero->mouvement.left)
         {
-            if(hero.e.position.x >= 640 || background->positionFond.x >= 0)
-                Deplacer_Hero(-hero.vitesse);
+            if(hero->e.position.x >= 640 || background->positionFond.x >= 0)
+                Deplacer_Hero(-hero->vitesse,hero);
 
             else
-                scrolling(background, hero.vitesse);
+                scrolling(background, hero->vitesse);
         }
-        if (hero.mouvement.right )
+        if (hero->mouvement.right )
         {
-            if(hero.e.position.x <= 640 || background->positionFond.x <= (1280 - 3150) + 20)
+            if(hero->e.position.x <= 640 || background->positionFond.x <= (1280 - 3150) + 20)
             {
-                if(hero.e.position.x + hero.e.position.w < 1280 - (60))
-                    Deplacer_Hero(hero.vitesse);
+                if(hero->e.position.x + hero->e.position.w < 1280 - (60))
+                    Deplacer_Hero(hero->vitesse,hero);
             }
             else
-                scrolling(background, -hero.vitesse);
+                scrolling(background, -hero->vitesse);
         }
     }
-    if(hero.mouvement.down && !hero.air && (!(position_absolue > 600 && position_absolue < 1120) && !(position_absolue > 1820 && position_absolue < 2340)))
+    if(hero->mouvement.down && !hero->air && (!(position_absolue > 600 && position_absolue < 1120) && !(position_absolue > 1820 && position_absolue < 2340)))
     {
-        hero.frame = 9;
-        hero.e.position.y = 250;
+        hero->frame = 9;
+        hero->e.position.y = 250;
     }
 }
 
 
-void jump(SDL_Event event)
+void jump(SDL_Event event,Hero *hero)
 {
-    int plus = -5;
-   if(hero.air && hero.e.position.y > hero.Default_y - 160 && !hero.sol)
-        hero.e.position.y += plus;
-    if(hero.e.position.y <= hero.Default_y - 160 || hero.e.position.y <= 5)
-        hero.sol = 1;
-    if(hero.e.position.y < hero.Default_y && hero.sol )
-        hero.e.position.y -= plus;
-    if(hero.e.position.y == hero.Default_y)
+    if(hero->frame != 9)
     {
-        hero.sol = 0;
-        hero.air = 0;
+        int plus = -5;
+        if(hero->air && hero->e.position.y > hero->Default_y - 160 && !hero->sol)
+            hero->e.position.y += plus;
+        if(hero->e.position.y <= hero->Default_y - 160 || hero->e.position.y <= 5)
+            hero->sol = 1;
+        if(hero->e.position.y < hero->Default_y && hero->sol )
+            hero->e.position.y -= plus;
+        if(hero->e.position.y == hero->Default_y)
+        {
+            hero->sol = 0;
+            hero->air = 0;
+        }
     }
 }
 
 
-void doKeyDown(SDL_Event event)
+void doKeyDown(SDL_Event event,Hero *hero)
 {
-    if(event.key.keysym.sym != SDLK_DOWN &&  hero.e.position.y != hero.Default_y && !hero.air)
-        hero.e.position.y = hero.Default_y;
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
+    if(event.key.keysym.sym != SDLK_DOWN &&  hero->e.position.y != hero->Default_y && !hero->air && (hero->frame==9&&event.key.keysym.sym != SDLK_UP))
+        hero->e.position.y = hero->Default_y;
+    if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE ))
     {
-        hero.mouvement.up = 1;
-        hero.air = 1;
+        if(hero->frame != 9)
+        {
+            hero->mouvement.up = 1;
+            hero->air = 1;
+        }
     }
     if (event.key.keysym.sym == SDLK_DOWN)
     {
-        hero.mouvement.down = 1;
-        hero.mouse_clicked = 0;
+        hero->mouvement.down = 1;
+        hero->mouse_clicked = 0;
     }
 
     if (event.key.keysym.sym == SDLK_LEFT)
     {
-        hero.mouvement.left = 1;
-        hero.mouvement.right = 0;
-        hero.mouse_clicked = 0;
+        hero->mouvement.left = 1;
+        hero->mouvement.right = 0;
+        hero->mouse_clicked = 0;
     }
 
     if (event.key.keysym.sym == SDLK_RIGHT )
     {
-        hero.mouvement.right = 1;
-        hero.mouvement.left = 0;
-        hero.mouse_clicked = 0;
+        hero->mouvement.right = 1;
+        hero->mouvement.left = 0;
+        hero->mouse_clicked = 0;
     }
 }
 
-void doKeyUp(SDL_Event event)
+void doKeyUp(SDL_Event event,Hero *hero)
 {
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE)
+    if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
     {
-        hero.mouvement.up = 0;
+        if(hero->frame != 9)
+            hero->mouvement.up = 0;
     }
-
     if (event.key.keysym.sym == SDLK_DOWN)
     {
-        hero.mouvement.down = 0;
+        hero->mouvement.down = 0;
     }
 
     if (event.key.keysym.sym == SDLK_LEFT)
     {
-        hero.mouvement.left = 0;
-        hero.frame = 5;
+        hero->mouvement.left = 0;
+        hero->frame = 5;
     }
 
     if (event.key.keysym.sym == SDLK_RIGHT)
     {
-        hero.mouvement.right = 0;
-        hero.frame = 0;
+        hero->mouvement.right = 0;
+        hero->frame = 0;
     }
 }
-void mouvement_mouse()
+void mouvement_mouse(Hero *hero)
 {
-    if(hero.mouse_clicked )
+    if(hero->mouse_clicked )
     {
-        if(hero.mouvement.right && hero.target < hero.e.position.x)
+        if(hero->mouvement.right && hero->target < hero->e.position.x)
         {
-            hero.mouse_clicked = 0;
-            hero.mouvement.right = 0;
+            hero->mouse_clicked = 0;
+            hero->mouvement.right = 0;
         }
-        if(hero.mouvement.left && hero.target > hero.e.position.x)
+        if(hero->mouvement.left && hero->target > hero->e.position.x)
         {
-            hero.mouvement.left = 0;
-            hero.mouse_clicked = 0;
+            hero->mouvement.left = 0;
+            hero->mouse_clicked = 0;
         }
     }
 }
 
 
-void getInput(SDL_Event event, int *continuer, Background *background)
+void getInput(SDL_Event event, int *continuer, Background *background,Hero *hero)
 {
     int i;
     SDL_PollEvent(&event);
@@ -261,34 +267,34 @@ void getInput(SDL_Event event, int *continuer, Background *background)
         (*continuer) = 0;
         break;
     case SDL_KEYDOWN:
-        doKeyDown(event);
+        doKeyDown(event,hero);
         switch(event.key.keysym.sym)
         {
         case SDLK_ESCAPE:
             (*continuer) = 0;
             break;
         case SDLK_LSHIFT:
-            hero.vitesse+=15;
+            hero->vitesse += 15;
         }
         break;
     case SDL_KEYUP:
-        doKeyUp(event);
+        doKeyUp(event,hero);
         switch(event.key.keysym.sym)
         {
         case SDLK_LSHIFT:
-            hero.vitesse-=15;
+            hero->vitesse -= 15;
         }
         break;
     case SDL_MOUSEBUTTONUP:
-        hero.target = event.button.x;
-        hero.mouse_clicked = 1;
-        if(hero.target > hero.e.position.x)
-            hero.mouvement.right = 1;
+        hero->target = event.button.x;
+        hero->mouse_clicked = 1;
+        if(hero->target > hero->e.position.x)
+            hero->mouvement.right = 1;
         else
-            hero.mouvement.left = 1;
+            hero->mouvement.left = 1;
         break;
     }
-    mouvement_mouse();
-    mouvement(event, background);
-    jump(event);
+    mouvement_mouse(hero);
+    mouvement(event, background,hero);
+    jump(event,hero);
 }
