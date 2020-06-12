@@ -1,10 +1,12 @@
 #include "hero.h"
 #include "sdl.h"
+
+//Fonction qui gère l'animation de l'héro en changeant de frame
 void Animation_Personnage(Hero *hero)
 {
     char direction;
 
-    if(!hero->air && !hero->mouvement.down && !hero->mouvement.up && hero->frame!=9)
+    if(!hero->air && !hero->mouvement.up && hero->frame != 9)
         hero->frame++;
 
     if (hero->mouvement.left)
@@ -114,66 +116,66 @@ int CollisionParfaite (Hero hero)
 
 }
 
-void Deplacer_Hero(int vitesse,Hero *hero)
+//Fonction qui permet de déplacer l'héro
+void Deplacer_Hero(int vitesse, Hero *hero)
 {
     hero->e.position.x += vitesse;
     position_absolue += vitesse;
 }
+
+//Fonction qui permet le scrolling du background quand l'héro atteint la moitié de l'écran
 void scrolling(Background *background, int vitesse)
 {
     background->positionFond.x += vitesse;
     position_absolue -= vitesse;
     decalage = vitesse;
 }
-void mouvement(SDL_Event event, Background *background,Hero *hero)
+
+//Fonction qui assure l'alternance entre scrolling et déplacement de l'héro
+void mouvement(SDL_Event event, Background *background, Hero *hero)
 {
     intervalleH2 = SDL_GetTicks();
     decalage = 0;
     SDLKey key = event.key.keysym.sym;
-    if((key == SDLK_UP || key == SDLK_LEFT || key == SDLK_RIGHT || (hero->mouse_clicked )) && intervalleH2 - intervalleH1 > 110)
+    if((key == SDLK_UP || key == SDLK_LEFT || key == SDLK_RIGHT || (hero->mouse_clicked )) && intervalleH2 - intervalleH1 > 100)
     {
         intervalleH1 = intervalleH2;
         Animation_Personnage(hero);
         CollisionParfaite((*hero));
+
         if (hero->mouvement.left)
         {
             if(hero->e.position.x >= 640 || background->positionFond.x >= 0)
-                Deplacer_Hero(-hero->vitesse,hero);
+                Deplacer_Hero(-hero->vitesse, hero);
 
             else
                 scrolling(background, hero->vitesse);
         }
-        if (hero->mouvement.right )
+        if (hero->mouvement.right)
         {
             if(hero->e.position.x <= 640 || background->positionFond.x <= (1280 - 3150) + 20)
             {
                 if(hero->e.position.x + hero->e.position.w < 1280 - (60))
-                    Deplacer_Hero(hero->vitesse,hero);
+                    Deplacer_Hero(hero->vitesse, hero);
             }
             else
                 scrolling(background, -hero->vitesse);
         }
     }
-    if(hero->mouvement.down && !hero->air && (!(position_absolue > 600 && position_absolue < 1120) && !(position_absolue > 1820 && position_absolue < 2340)))
-    {
-        hero->frame = 9;
-        hero->e.position.y = 250;
-    }
 }
 
-
-void jump(SDL_Event event,Hero *hero)
+//Fonction de saut de l'héro
+void jump(SDL_Event event, Hero *hero)
 {
     if(hero->frame != 9)
     {
-        int plus = -5;
-        if(hero->air && hero->e.position.y > hero->Default_y - 160 && !hero->sol)
-            hero->e.position.y += plus;
-        if(hero->e.position.y <= hero->Default_y - 160 || hero->e.position.y <= 5)
+        if(hero->air && hero->e.position.y > JumpLimit && !hero->sol)
+            hero->e.position.y += Gravity;
+        if(hero->e.position.y <= JumpLimit )
             hero->sol = 1;
-        if(hero->e.position.y < hero->Default_y && hero->sol )
-            hero->e.position.y -= plus;
-        if(hero->e.position.y == hero->Default_y)
+        if(hero->e.position.y < Hero_Default_Y && hero->sol )
+            hero->e.position.y -= Gravity;
+        if(hero->e.position.y == Hero_Default_Y)
         {
             hero->sol = 0;
             hero->air = 0;
@@ -181,11 +183,11 @@ void jump(SDL_Event event,Hero *hero)
     }
 }
 
-
-void doKeyDown(SDL_Event event,Hero *hero)
+//Fonction qui déclenche le mouvement quand la touché est appuyée
+void doKeyDown(SDL_Event event, Hero *hero)
 {
-    if(event.key.keysym.sym != SDLK_DOWN &&  hero->e.position.y != hero->Default_y && !hero->air && (hero->frame==9&&event.key.keysym.sym != SDLK_UP))
-        hero->e.position.y = hero->Default_y;
+    if(event.key.keysym.sym != SDLK_DOWN &&  hero->e.position.y != Hero_Default_Y && !hero->air && (event.key.keysym.sym != SDLK_UP))
+        hero->e.position.y = Hero_Default_Y;
     if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE ))
     {
         if(hero->frame != 9)
@@ -194,10 +196,11 @@ void doKeyDown(SDL_Event event,Hero *hero)
             hero->air = 1;
         }
     }
-    if (event.key.keysym.sym == SDLK_DOWN)
+    if (event.key.keysym.sym == SDLK_DOWN && !hero->air && !hero->sol)
     {
-        hero->mouvement.down = 1;
         hero->mouse_clicked = 0;
+        hero->frame = 9;
+        hero->e.position.y = 250;
     }
 
     if (event.key.keysym.sym == SDLK_LEFT)
@@ -215,16 +218,13 @@ void doKeyDown(SDL_Event event,Hero *hero)
     }
 }
 
-void doKeyUp(SDL_Event event,Hero *hero)
+//Fonction qui désenclenche le mouvement quand la touché n'est plus appuyée
+void doKeyUp(SDL_Event event, Hero *hero)
 {
     if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
     {
         if(hero->frame != 9)
             hero->mouvement.up = 0;
-    }
-    if (event.key.keysym.sym == SDLK_DOWN)
-    {
-        hero->mouvement.down = 0;
     }
 
     if (event.key.keysym.sym == SDLK_LEFT)
@@ -239,6 +239,8 @@ void doKeyUp(SDL_Event event,Hero *hero)
         hero->frame = 0;
     }
 }
+
+//Fonction permettant le mouvement avec la souris
 void mouvement_mouse(Hero *hero)
 {
     if(hero->mouse_clicked )
@@ -256,8 +258,14 @@ void mouvement_mouse(Hero *hero)
     }
 }
 
+//Fonction qui augmente la vitesse de l'hero en appuyant sur Shift (gauche)
+void Acceleration(Hero *hero, int acceleration)
+{
+    hero->vitesse += acceleration;
+}
 
-void getInput(SDL_Event event, int *continuer, Background *background,Hero *hero)
+//Fonction qui gère l'input du joueur
+void getInput(SDL_Event event, int *continuer, Background *background, Hero *hero)
 {
     int i;
     SDL_PollEvent(&event);
@@ -267,22 +275,22 @@ void getInput(SDL_Event event, int *continuer, Background *background,Hero *hero
         (*continuer) = 0;
         break;
     case SDL_KEYDOWN:
-        doKeyDown(event,hero);
+        doKeyDown(event, hero);
         switch(event.key.keysym.sym)
         {
         case SDLK_ESCAPE:
             (*continuer) = 0;
             break;
         case SDLK_LSHIFT:
-            hero->vitesse += 15;
+            Acceleration(hero, 15);
         }
         break;
     case SDL_KEYUP:
-        doKeyUp(event,hero);
+        doKeyUp(event, hero);
         switch(event.key.keysym.sym)
         {
         case SDLK_LSHIFT:
-            hero->vitesse -= 15;
+            Acceleration(hero, -15);
         }
         break;
     case SDL_MOUSEBUTTONUP:
@@ -295,6 +303,6 @@ void getInput(SDL_Event event, int *continuer, Background *background,Hero *hero
         break;
     }
     mouvement_mouse(hero);
-    mouvement(event, background,hero);
-    jump(event,hero);
+    mouvement(event, background, hero);
+    jump(event, hero);
 }

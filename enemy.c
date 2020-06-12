@@ -70,16 +70,15 @@ void Deplacer(Enemies *enemies)
 {
     int i;
     for(i = 0; i < enemies->nombre; i++)
-        {
-            enemies->enemy[i].e.position.x += decalage;
-            enemies->enemy[i].min += decalage;
-            enemies->enemy[i].max += decalage;
-        }
+    {
+        enemies->enemy[i].e.position.x += decalage;
+        enemies->enemy[i].min += decalage;
+        enemies->enemy[i].max += decalage;
+    }
     intervalleE2 = SDL_GetTicks();
     if(intervalleE2 - intervalleE1 > 150)
     {
         intervalleE1 = intervalleE2;
-        printf("%d %d\n",enemies->enemy[0].min ,enemies->enemy[0].max);
         Animation_Enemy(enemies);
         for(i = 0; i < enemies->nombre; i++)
         {
@@ -95,13 +94,12 @@ void Deplacer(Enemies *enemies)
         }
     }
 }
-
 void collision_ennemy(Enemies *enemies, Hero *hero)
 {
     int i;
     for(i = 0; i < enemies->nombre; i++)
     {
-        if(hero->frame == 9 && !((hero->e.position.x + hero->e.position.w < enemies->enemy[i].e.position.x) || (hero->e.position.x > enemies->enemy[i].e.position.x + enemies->enemy[i].e.position.w) ||
+        if(hero->frame != 9 && !((hero->e.position.x + hero->e.position.w < enemies->enemy[i].e.position.x) || (hero->e.position.x > enemies->enemy[i].e.position.x + enemies->enemy[i].e.position.w) ||
                                  (hero->e.position.y + hero->e.position.h < enemies->enemy[i].e.position.y) || (hero->e.position.y > enemies->enemy[i].e.position.y + enemies->enemy[i].e.position.h )))
         {
             init_hero(hero);

@@ -2,9 +2,14 @@
 #define HERO_H_INCLUDED
 #include "entity.h"
 #include "header.h"
+
+#define JumpLimit 180
+#define Hero_Default_Y 340
+#define Gravity -5
+
 typedef struct 
 {
-	int  up, down, left, right;
+	int  up,left, right;
 }Mouvement;
 typedef struct
 {
@@ -12,7 +17,7 @@ typedef struct
     Mouvement mouvement;
     int frame, air, sol;
     char direction;
-    int mouse_clicked, target, vitesse,Default_y;
+    int mouse_clicked, target, vitesse;
 } Hero;
 
 SDL_Surface *masque;

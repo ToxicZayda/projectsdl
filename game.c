@@ -102,25 +102,20 @@ int Game()
 {
     masque = NULL;
     Hero hero1;
-    SDL_Rect positionMasque, pos [8];
-    int X, Y;
-    Uint32 couleur_obstacle;
     TTF_Init();
-    positionMasque.x = 0;
-    positionMasque.y = 0;
     masque = IMG_Load("mask.png");
-    int activer_enigme = 0, exit, test, i, continu = 1, end, old, final = 0;
-    //SDL_CloseAudio();
+    int activer_enigme = 0,i;
     Mix_FreeMusic(music);
-    enigme E;
     Enemies enemies;
     enemies.nombre = 3;
     enemies.enemy[0] = init_enemy(20,660,340);
     enemies.enemy[1] = init_enemy(20,1560,340);
     enemies.enemy[2] = init_enemy(20,2460,340);
     background = init_back("back.png");
-    intervalleH1 = 0, intervalleH2 = 0,intervalleE1 = 0, intervalleE2 = 0, decalage = 0, destination =  0, continuer = 1,position_absolue =100;
+    intervalleH1 = 0, intervalleH2 = 0,intervalleE1 = 0, intervalleE2 = 0, decalage = 0,
+      destination =  0, continuer = 1,position_absolue =100;
     init_hero(&hero1);
+    
     SDL_Event event;
     SDL_EnableKeyRepeat(100, 100);
 
@@ -141,44 +136,9 @@ int Game()
     }
 
     if(activer_enigme)
-    {
-        E = initialiserEnigme("Enigmes/wEnigme/background.png", "Enigmes/wEnigme/win.png", "Enigmes/wEnigme/lose.png");
-        afficherEnigme(&E);
-        while(continu)
-        {
-            old = EndingCheck(&E);
-            enigmeInput(&E, &continu);
-            animationEnigme(&E, EndingCheck(&E), old);
-            SDL_Flip(ecran);
-            if (EndingCheck(&E) == 0)
-            {
-                exit = 0;
-                continu = 0;
-            }
-            if(EndingCheck(&E) == -1)
-            {
-                exit = -1;
-                continu = 0;
-            }
-        }
-        if (exit == 0)
-        {
-            test = jEnigme();
-            final = ending(&E, test);
-        }
-        if (exit == -1)
-            final = ending(&E, exit);
-        Mix_FreeChunk(E.backgroundMus);
-        Mix_FreeChunk(E.rightEffect);
-        Mix_FreeChunk(E.wrongEffect);
-        Mix_FreeChunk(E.stampEffect);
-        Mix_FreeChunk(E.houseAlarm);
-        SDL_FreeSurface(E.background);
-        SDL_FreeSurface(E.win);
-        SDL_FreeSurface(E.lose);
+        Enigme_finale();
 
-        Mix_CloseAudio();
-    }
+
     SDL_FreeSurface(background.imageDeFond);
     free_enemy(&enemies);
     free_hero(&hero1);

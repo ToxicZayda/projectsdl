@@ -1,5 +1,6 @@
 #include "Enigmes.h"
 
+#include "aEnigmes.h"
 
 
 photo init_photo(char images[])
@@ -94,5 +95,46 @@ int get_Input(SDL_Event event, int *continuer, enigmes e, int num)
     }
 
     return resolution;
+}
+void Enigme_finale()
+{
+    int final=0,test,exit,old,end,continu = 1;
+    enigme E;
+    E = initialiserEnigme("Enigmes/wEnigme/background.png", "Enigmes/wEnigme/win.png", "Enigmes/wEnigme/lose.png");
+        afficherEnigme(&E);
+        while(continu)
+        {
+            old = EndingCheck(&E);
+            enigmeInput(&E, &continu);
+            animationEnigme(&E, EndingCheck(&E), old);
+            SDL_Flip(ecran);
+            if (EndingCheck(&E) == 0)
+            {
+                exit = 0;
+                continu = 0;
+            }
+            if(EndingCheck(&E) == -1)
+            {
+                exit = -1;
+                continu = 0;
+            }
+        }
+        if (exit == 0)
+        {
+            test = jEnigme();
+            final = ending(&E, test);
+        }
+        if (exit == -1)
+            final = ending(&E, exit);
+        Mix_FreeChunk(E.backgroundMus);
+        Mix_FreeChunk(E.rightEffect);
+        Mix_FreeChunk(E.wrongEffect);
+        Mix_FreeChunk(E.stampEffect);
+        Mix_FreeChunk(E.houseAlarm);
+        SDL_FreeSurface(E.background);
+        SDL_FreeSurface(E.win);
+        SDL_FreeSurface(E.lose);
+
+        Mix_CloseAudio();
 }
 

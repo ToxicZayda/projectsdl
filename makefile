@@ -16,8 +16,6 @@ game.o:game.c
 	gcc -c game.c
 entity.o:entity.c
 	gcc -c entity.c
-enigmes.o:enigmes.c
-	gcc -c enigmes.c
 enemy.o:enemy.c
 	gcc -c enemy.c
 aEnigmes.o:aEnigmes.c
