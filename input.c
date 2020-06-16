@@ -197,7 +197,7 @@ void doKeyDown(SDL_Event event, Hero *hero)
             hero->air = 1;
         }
     }
-    if (event.key.keysym.sym == SDLK_DOWN && !hero->air && !hero->sol)
+    if (event.key.keysym.sym == SDLK_DOWN && !hero->air && !hero->sol && (!(position_absolue > 600 && position_absolue < 1120) && !(position_absolue > 1820 && position_absolue < 2340)))
     {
         hero->mouse_clicked = 0;
         hero->frame = 9;
@@ -325,7 +325,7 @@ void getInput(SDL_Event event, int *continuer, Background *background, Hero *her
         }
         break;
     case SDL_KEYUP:
-        doKeyUp(event, hero,&save);
+        doKeyUp(event, hero,save);
         switch(event.key.keysym.sym)
         {
         case SDLK_LSHIFT:

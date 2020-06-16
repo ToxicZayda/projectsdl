@@ -124,11 +124,11 @@ int Game(int *save)
     {
         aff_back(background);
         aff_hero((&hero1));
-        getInput(event, &continuer, &background,&hero1,&save);
+        getInput(event, &continuer, &background,&hero1,save);
         collision_ennemy(&enemies,&hero1);
         Deplacer(&enemies);
         aff_enemies(&enemies);
-                saveGame(hero1,"save.txt",save);
+                saveGame(hero1,"save.txt",*save);
         SDL_Flip(ecran);
         if(CollisionParfaite(hero1)!=0)
         {
