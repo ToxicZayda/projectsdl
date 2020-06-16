@@ -82,7 +82,7 @@ void souris(SDL_Event event, int *destination, int *continu, Menu *m)
         position = mouse_input(event, m);
         if(position == 1)
         {
-            (*destination) = 3;
+            (*destination) = 4;
             (*continu) = 0;
         }
         if(position == 2)
@@ -372,4 +372,388 @@ void souris_MenuOp(SDL_Event event, int *destination, int *continu, Menu *m)
         break;
 
     }
+}
+
+void souris_MenuMultiplayer(SDL_Event event, int *destination, int *continu, Menu *m)
+{
+    Mix_Chunk *sound_but;
+    sound_but = Mix_LoadWAV("menu/s.wav");
+    SDL_PollEvent(&event);
+    (*continu) = 1;
+    switch(event.type)
+    {
+    case SDL_QUIT:
+        (*destination) = 0;
+        (*continu) = 0;
+        Mix_FreeChunk(sound_but);
+        break;
+    case SDL_MOUSEMOTION:
+        position = mouse_input(event, m);
+        hover_button(m, position);
+        if(position > 0 && position <= m->nbre)
+        {
+            if(in != 1)
+                Mix_PlayChannel(1, sound_but, 0);
+            in = 1;
+        }
+        else
+        {
+            in = 0;
+        }
+        break;
+    case SDL_MOUSEBUTTONUP:
+        position = mouse_input(event, m);
+
+        if(position == 2)
+        {
+            (*continu) = 0;
+            (*destination) = 1;
+        }
+        if(position == 1)
+        {
+            (*continu) = 0;
+            (*destination) = 5;
+        }
+        if(position == 3)
+            {
+            (*continu) = 0;
+            (*destination) = 1;
+            }
+        break;
+    case SDL_KEYDOWN:
+        switch(event.key.keysym.sym)
+        {
+        
+        case SDLK_ESCAPE :
+            (*continu) = 0;
+            (*destination) = 1;
+            break;
+        case SDLK_LEFT: // Flèche gauche
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 1);
+                m->selected_button = 1 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RIGHT: // Flèche droite
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 2);
+                m->selected_button = 2 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RETURN:
+            switch(m->selected_button)
+            {
+            case 1:
+                (*destination) = 3;
+                (*continu) = 0;
+                break;
+            case 2:
+                (*destination) = 1;
+                (*continu) = 0;
+                break;
+            }
+            break;
+        }
+        break;
+
+    }
+}
+
+
+void souris_MenuController(SDL_Event event, int *destination, int *continu, Menu *m)
+{
+    Mix_Chunk *sound_but;
+    sound_but = Mix_LoadWAV("menu/s.wav");
+    SDL_PollEvent(&event);
+    (*continu) = 1;
+    switch(event.type)
+    {
+    case SDL_QUIT:
+        (*destination) = 0;
+        (*continu) = 0;
+        Mix_FreeChunk(sound_but);
+        break;
+    case SDL_MOUSEMOTION:
+        position = mouse_input(event, m);
+        hover_button(m, position);
+        if(position > 0 && position <= m->nbre)
+        {
+            if(in != 1)
+                Mix_PlayChannel(1, sound_but, 0);
+            in = 1;
+        }
+        else
+        {
+            in = 0;
+        }
+        break;
+    case SDL_MOUSEBUTTONUP:
+        position = mouse_input(event, m);
+
+        if(position == 2)
+        {
+            (*continu) = 0;
+            (*destination) = 4;
+        }
+        if(position == 1)
+        {
+            (*continu) = 0;
+            (*destination) = 6;
+        }
+        if(position == 3)
+            {
+            (*continu) = 0;
+            (*destination) = 4;
+            }
+        break;
+    case SDL_KEYDOWN:
+        switch(event.key.keysym.sym)
+        {
+        
+        case SDLK_ESCAPE :
+            (*continu) = 0;
+            (*destination) = 1;
+            break;
+        case SDLK_LEFT: // Flèche gauche
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 1);
+                m->selected_button = 1 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RIGHT: // Flèche droite
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 2);
+                m->selected_button = 2 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RETURN:
+            switch(m->selected_button)
+            {
+            case 1:
+                (*destination) = 3;
+                (*continu) = 0;
+                break;
+            case 2:
+                (*destination) = 1;
+                (*continu) = 0;
+                break;
+            }
+            break;
+        }
+        break;
+
+    }
+}
+
+
+void souris_MenuLoad(SDL_Event event, int *destination, int *continu, Menu *m,int * save)
+{
+    Mix_Chunk *sound_but;
+    sound_but = Mix_LoadWAV("menu/s.wav");
+    SDL_PollEvent(&event);
+    (*continu) = 1;
+    switch(event.type)
+    {
+    case SDL_QUIT:
+        (*destination) = 0;
+        (*continu) = 0;
+        Mix_FreeChunk(sound_but);
+        break;
+    case SDL_MOUSEMOTION:
+        position = mouse_input(event, m);
+        hover_button(m, position);
+        if(position > 0 && position <= m->nbre)
+        {
+            if(in != 1)
+                Mix_PlayChannel(1, sound_but, 0);
+            in = 1;
+        }
+        else
+        {
+            in = 0;
+        }
+        break;
+    case SDL_MOUSEBUTTONUP:
+        position = mouse_input(event, m);
+
+        if(position == 2)
+        {
+            (*continu) = 0;
+            (*save)=2;
+            (*destination) = 3;
+        }
+        if(position == 1)
+        {
+            (*continu) = 0;
+            (*destination) = 3;
+        }
+        if(position == 3)
+            {
+            (*continu) = 0;
+            (*destination) = 5;
+            }
+        break;
+    case SDL_KEYDOWN:
+        switch(event.key.keysym.sym)
+        {
+        
+        case SDLK_ESCAPE :
+            (*continu) = 0;
+            (*destination) = 1;
+            break;
+        case SDLK_LEFT: // Flèche gauche
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 1);
+                m->selected_button = 1 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RIGHT: // Flèche droite
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 2);
+                m->selected_button = 2 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        case SDLK_RETURN:
+            switch(m->selected_button)
+            {
+            case 1:
+                (*destination) = 3;
+                (*continu) = 0;
+                break;
+            case 2:
+                (*destination) = 1;
+                (*continu) = 0;
+                break;
+            }
+            break;
+        }
+        break;
+
+    }
+}
+
+
+int souris_MenuSave(Menu *m,SDL_Event event)
+{
+    
+    int position=0;
+    SDL_WaitEvent(&event);
+    switch(event.type)
+    {
+    
+    case SDL_MOUSEMOTION:
+        position = mouse_input(event, m);
+        hover_button(m, position);
+        
+        break;
+    case SDL_MOUSEBUTTONUP:
+        position = mouse_input(event, m);
+
+        if(position == 2)
+        {
+            return 0;
+
+        }
+        if(position == 1)
+        {
+            return 1;
+        }
+    
+        
+        break;
+    case SDL_KEYDOWN:
+        switch(event.key.keysym.sym)
+        {
+        
+        
+        case SDLK_RIGHT: // Flèche droite
+           switch(m->selected_button)
+            {
+            case 0:
+                hover_button(m, 2);
+                m->selected_button = 2 ;
+                break;
+            case 1:
+                hover_button(m, 2);
+                m->selected_button=2;
+                break;
+            case 2:
+                hover_button(m, 1);
+                m->selected_button=1;
+                break;
+            }
+            break;
+        
+        }
+        break;
+        
+
+    }
+    return 6;
 }

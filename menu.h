@@ -33,7 +33,7 @@ void aff_button(Menu *m);
 void souris(SDL_Event event,int *destination,int *continu,Menu *m);
 void souris_MenuOp(SDL_Event event, int *destination, int *continu, Menu *m);
 void free_menu(Menu *m);
-
+void souris_MenuController(SDL_Event event, int *destination, int *continu, Menu *m);
 void init_animation(animated *a);
 void aff_animation(animated *a);
 void animation(animated *a);
