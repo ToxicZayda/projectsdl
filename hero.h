@@ -25,12 +25,14 @@ int intervalleH1,intervalleH2,intervalleE1,intervalleE2,destination,continuer,po
 
 void init_hero(Hero *hero);
 void aff_hero(Hero *hero);
-void getInput(SDL_Event event, int *continuer,Background *background,Hero *hero);
+void getInput(SDL_Event event, int *continuer,Background *background,Hero *hero,int *save);
 void free_hero(Hero *hero);
-void doKeyUp(SDL_Event event,Hero *hero);
+void doKeyUp(SDL_Event event,Hero *hero,int *save);
 void doKeyDown(SDL_Event event,Hero *hero);
 void mouvement_mouse(Hero *hero);
 void mouvement(SDL_Event event,Background *background,Hero *hero);
 SDL_Color GetPixel(int X, int Y);
 int CollisionParfaite (Hero hero);
+void saveGame(Hero player, char filename[50],int save);
+void LoadGame(Hero *player, char filename[50],int save);
 #endif

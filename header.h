@@ -11,7 +11,10 @@ typedef struct
 
 Background background;
 
-int Game();
+int MenuController();
+int MenuLoad(int *save);
+int MenuMultiplayer();
+int Game(int *save);
 int MenuOp();
 int MenuP();
 Background init_back(char background_name[]);

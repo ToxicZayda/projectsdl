@@ -98,7 +98,7 @@ int MenuOp()
         free_animation(&an);
     return destination;
 }
-int Game()
+int Game(int *save)
 {
     masque = NULL;
     Hero hero1;
@@ -118,15 +118,17 @@ int Game()
     
     SDL_Event event;
     SDL_EnableKeyRepeat(100, 100);
+    LoadGame(&hero1,"save.txt",(*save));
 
     while (continuer)
     {
         aff_back(background);
         aff_hero((&hero1));
-        getInput(event, &continuer, &background,&hero1);
+        getInput(event, &continuer, &background,&hero1,save);
         collision_ennemy(&enemies,&hero1);
         Deplacer(&enemies);
         aff_enemies(&enemies);
+                saveGame(hero1,"save.txt",*save);
         SDL_Flip(ecran);
         if(CollisionParfaite(hero1)!=0)
         {
@@ -148,6 +150,140 @@ int Game()
     return destination;
 }
 
+
+int MenuMultiplayer()
+{
+    int destination;
+    TTF_Init();
+    SDL_Surface *texte = NULL;
+    SDL_Rect position;
+    TTF_Font *police = NULL;
+    SDL_Color couleur = {0, 0, 0};
+    police = TTF_OpenFont("Ghost Writer - Demo.ttf", 30);
+    /* Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) */
+    texte = TTF_RenderText_Blended(police, "Copyright 2020 - Imperium ", couleur);
+    position.x = 1000;
+    position.y = 550;
+
+    Menu m1 = init_menu("menu/newgameMenu/MENUBACKGROUND.jpg", 3);
+
+    //initialisation des boutons
+    m1.B[0] = init_button(340, 200, "menu/1player.png", "menu/1player_active.png");
+    m1.B[1] = init_button(590, 200, "menu/2players.png", "menu/2players_active.png");
+    m1.B[2] = init_button(420, 400, "menu/back.png", "menu/back_active.png");
+    //iniinitialisation du SDL
+    int continu = 1;
+    //Affiche le menu
+    //Affiche les boutons initials du menu
+    SDL_Event even;
+    while(continu)
+    {
+        aff_menu(&m1);
+        SDL_BlitSurface(texte, NULL, ecran, &position);
+        aff_button(&m1);
+        
+        //Gestion de l'input
+        souris_MenuMultiplayer(even, &destination, &continu, &m1);
+        SDL_Flip(ecran);
+    }
+    free_menu(&m1);
+    SDL_Flip(ecran);
+    TTF_CloseFont(police);
+    TTF_Quit();
+    SDL_FreeSurface(texte);
+    
+    return destination;
+}
+
+int MenuController()
+{
+    int destination;
+    TTF_Init();
+    SDL_Surface *texte = NULL;
+    SDL_Rect position;
+    TTF_Font *police = NULL;
+    SDL_Color couleur = {0, 0, 0};
+    police = TTF_OpenFont("Ghost Writer - Demo.ttf", 30);
+    // Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) 
+    texte = TTF_RenderText_Blended(police, "Copyright 2020 - Imperium ", couleur);
+    position.x = 1000;
+    position.y = 550;
+
+    Menu m1 = init_menu("menu/controllerMenu/controllerBACKGROUND.jpg", 3);
+
+    //initialisation des boutons
+    m1.B[1] = init_button(740, 350, "menu/controllerMenu/controller.png", "menu/controllerMenu/controller_active.png");
+    m1.B[0] = init_button(360, 350, "menu/controllerMenu/mousekeyboard.png", "menu/controllerMenu/mousekeyboard_active.png");
+    m1.B[2] = init_button(20, 20, "menu/back.png", "menu/back_active.png");
+    //iniinitialisation du SDL
+    int continu = 1;
+    //Affiche le menu
+    //Affiche les boutons initials du menu
+    SDL_Event even;
+    while(continu)
+    {
+        aff_menu(&m1);
+        SDL_BlitSurface(texte, NULL, ecran, &position);
+        aff_button(&m1);
+        
+        //Gestion de l'input
+        souris_MenuController(even, &destination, &continu, &m1);
+        SDL_Flip(ecran);
+    }
+    free_menu(&m1);
+    SDL_Flip(ecran);
+    TTF_CloseFont(police);
+    TTF_Quit();
+    SDL_FreeSurface(texte);
+    
+    return destination;
+}
+
+int MenuLoad(int *save)
+{
+    int destination;
+    TTF_Init();
+    SDL_Surface *texte = NULL;
+    SDL_Rect position;
+    TTF_Font *police = NULL;
+    SDL_Color couleur = {0, 0, 0};
+    police = TTF_OpenFont("Ghost Writer - Demo.ttf", 30);
+    // Écriture du texte dans la SDL_Surface texte en mode Blended (optimal) 
+    texte = TTF_RenderText_Blended(police, "Copyright 2020 - Imperium ", couleur);
+    position.x = 1000;
+    position.y = 550;
+
+    Menu m1 = init_menu("menu/newgameMenu/MENUBACKGROUND.jpg", 3);
+
+    //initialisation des boutons
+    m1.B[0] = init_button(360, 270, "menu/newgameMenu/newgame.png", "menu/newgameMenu/newgame_active.png");
+    m1.B[1] = init_button(740, 270, "menu/newgameMenu/continue.png", "menu/newgameMenu/continue_active.png");
+    m1.B[2] = init_button(20, 20, "menu/back.png", "menu/back_active.png");
+
+    
+    //iniinitialisation du SDL
+    int continu = 1;
+    //Affiche le menu
+    //Affiche les boutons initials du menu
+    SDL_Event even;
+    while(continu)
+    {
+        aff_menu(&m1);
+        SDL_BlitSurface(texte, NULL, ecran, &position);
+        aff_button(&m1);
+        
+        //Gestion de l'input
+        souris_MenuLoad(even, &destination, &continu, &m1,save);
+        SDL_Flip(ecran);
+    }
+    free_menu(&m1);
+    SDL_Flip(ecran);
+    TTF_CloseFont(police);
+    TTF_Quit();
+    SDL_FreeSurface(texte);
+    ;
+    return destination;
+}
 
 
 

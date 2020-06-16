@@ -1,5 +1,6 @@
 #include "hero.h"
 #include "sdl.h"
+#include "menu.h"
 
 //Fonction qui gère l'animation de l'héro en changeant de frame
 void Animation_Personnage(Hero *hero)
@@ -196,7 +197,7 @@ void doKeyDown(SDL_Event event, Hero *hero)
             hero->air = 1;
         }
     }
-    if (event.key.keysym.sym == SDLK_DOWN && !hero->air && !hero->sol)
+    if (event.key.keysym.sym == SDLK_DOWN && !hero->air && !hero->sol && (!(position_absolue > 600 && position_absolue < 1120) && !(position_absolue > 1820 && position_absolue < 2340)))
     {
         hero->mouse_clicked = 0;
         hero->frame = 9;
@@ -219,7 +220,7 @@ void doKeyDown(SDL_Event event, Hero *hero)
 }
 
 //Fonction qui désenclenche le mouvement quand la touché n'est plus appuyée
-void doKeyUp(SDL_Event event, Hero *hero)
+void doKeyUp(SDL_Event event, Hero *hero,int *save)
 {
     if ((event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_SPACE))
     {
@@ -265,9 +266,9 @@ void Acceleration(Hero *hero, int acceleration)
 }
 
 //Fonction qui gère l'input du joueur
-void getInput(SDL_Event event, int *continuer, Background *background, Hero *hero)
+void getInput(SDL_Event event, int *continuer, Background *background, Hero *hero,int *save)
 {
-    int i;
+    int i,k=1;
     SDL_PollEvent(&event);
     switch(event.type)
     {
@@ -278,15 +279,53 @@ void getInput(SDL_Event event, int *continuer, Background *background, Hero *her
         doKeyDown(event, hero);
         switch(event.key.keysym.sym)
         {
-        case SDLK_ESCAPE:
-            (*continuer) = 0;
+        case SDLK_ESCAPE:;
+        
+        Menu m1=init_menu("menu/saveMenu/saveBACKGROUND.png", 2);
+
+    //initialisation des boutons
+    m1.B[0] = init_button(360, 270, "menu/saveMenu/save.png", "menu/saveMenu/save_active.png");
+    m1.B[1] = init_button(740, 270, "menu/saveMenu/continue.png", "menu/saveMenu/continue_active.png");
+        
+    
+
+    
+    //iniinitialisation du SDL
+    int continu = 1;
+    //Affiche le menu
+    aff_menu(&m1);
+    //Affiche les boutons initials du menu
+    SDL_Event eve;
+    while(continu)
+    {
+        
+        k =  souris_MenuSave(&m1,eve);
+        
+        aff_button(&m1);
+        
+        //Gestion de l'input
+        if(k==0)
+           continu=0;
+       if(k==1)
+        {
+            (*save)=1;
+            continu=0;
+        }
+   
+                  
+
+
+        SDL_Flip(ecran);
+    }
+
+
             break;
         case SDLK_LSHIFT:
             Acceleration(hero, 15);
         }
         break;
     case SDL_KEYUP:
-        doKeyUp(event, hero);
+        doKeyUp(event, hero,save);
         switch(event.key.keysym.sym)
         {
         case SDLK_LSHIFT:
