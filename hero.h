@@ -20,9 +20,20 @@ typedef struct
     int mouse_clicked, target, vitesse;
 } Hero;
 
+typedef struct
+{
+  
+	SDL_Surface *fontdot;
+	SDL_Rect positiondot; 
+}dot;
+dot herodot;
+
 SDL_Surface *masque;
 int intervalleH1,intervalleH2,intervalleE1,intervalleE2,destination,continuer,position_absolue;
 
+dot init_dot(char reddot[]);
+void aff_dot(dot herodot);
+void Deplacer_dot(dot *herodot,Hero *hero);
 void init_hero(Hero *hero);
 void aff_hero(Hero *hero);
 void getInput(SDL_Event event, int *continuer,Background *background,Hero *hero,int *save);
