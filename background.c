@@ -9,6 +9,15 @@ Background init_back(char background_name[])
     
     return background;
 }
+minimap init_map (char map_name[])
+{
+    minimap Map;
+    Map.map= IMG_Load(map_name);
+    Map.positionMap.x =0;
+    Map.positionMap.y=5;
+
+    return  Map;
+}    
 void  init_SDL()
 {
     if(Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
@@ -27,4 +36,13 @@ void  init_SDL()
 void aff_back(Background background)
 {
     SDL_BlitSurface(background.imageDeFond, NULL, ecran, &background.positionFond);
+}
+/**
+* @brief affichage de la minimap.
+* @param Map  .
+* @return Rien.
+*/
+void aff_map(minimap Map)
+{
+    SDL_BlitSurface(Map.map, NULL, ecran, &Map.positionMap); 
 }
