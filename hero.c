@@ -41,4 +41,30 @@ void free_hero(Hero *hero)
         SDL_FreeSurface(hero->e.sprite[i]);
     }
 }
+/**
+* @brief initialisation de point représentant le hero sur la minimap.
+* @param reddot  .
+* @return dot.
+*/
+
+dot init_dot(char reddot[])
+{
+
+    dot herodot;
+    herodot.fontdot = IMG_Load(reddot);
+    herodot.positiondot.x = 5;
+    herodot.positiondot.y = 30;
+    
+    return herodot;
+}
+/**
+* @brief affichage de point représentant le hero sur la minimap.
+* @param herodot  .
+* @return Rien.
+*/
+void aff_dot(dot herodot)
+{
+ SDL_BlitSurface(herodot.fontdot , NULL, ecran, &herodot.positiondot);
+}
+
 
