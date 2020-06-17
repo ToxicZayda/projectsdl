@@ -117,6 +117,22 @@ int CollisionParfaite (Hero hero)
 
 }
 
+/**
+* @brief Deplacement de point représentant le hero sur la minimap.
+* @param herodot .
+* @param hero.
+* @return Rien.
+*/
+void Deplacer_dot(dot *herodot, Hero *hero)
+{
+    if (position_absolue > 0 )
+    {
+        herodot->positiondot.x = position_absolue / 9.7;
+    }
+    herodot->positiondot.y = 35;
+
+}
+
 //Fonction qui permet de déplacer l'héro
 void Deplacer_Hero(int vitesse, Hero *hero)
 {
