@@ -11,6 +11,14 @@ typedef struct
 
 Background background;
 
+typedef struct 
+{
+	SDL_Surface *map;
+	SDL_Rect positionMap;
+}minimap;
+
+minimap Map;
+
 int MenuController();
 int MenuLoad(int *save);
 int MenuMultiplayer();
@@ -22,4 +30,6 @@ void init_SDL();
 void aff_back(Background background);
 int level1();
 int level2();
+void aff_map(minimap Map);
+minimap init_map (char map_name[]);
 #endif // HEADER_H_INCLUDED
