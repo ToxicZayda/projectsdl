@@ -76,21 +76,24 @@ void Deplacer(Enemies *enemies)
         enemies->enemy[i].max += decalage;
     }
     intervalleE2 = SDL_GetTicks();
-    if(intervalleE2 - intervalleE1 > 150)
+    if(intervalleE2 - intervalleE1 > 150 )
     {
         intervalleE1 = intervalleE2;
+        if ( enemies->enemy[i].e.position.x != enemies->enemy[i].max && enemies->enemy[i].e.position.x != enemies->enemy[i].min)
         Animation_Enemy(enemies);
         for(i = 0; i < enemies->nombre; i++)
         {
-            if(enemies->enemy[i].e.position.x > enemies->enemy[i].max)
-                enemies->enemy[i].Edirection = 'l';
-            if (enemies->enemy[i].e.position.x <  enemies->enemy[i].min)
-                enemies->enemy[i].Edirection = 'r';
+            
+               if(enemies->enemy[i].e.position.x > enemies->enemy[i].max)
+                    enemies->enemy[i].Edirection = 'l';
+                if (enemies->enemy[i].e.position.x <  enemies->enemy[i].min)
+                    enemies->enemy[i].Edirection = 'r';
 
-            if(enemies->enemy[i].Edirection == 'r')
-                enemies->enemy[i].e.position.x += enemies->enemy[i].vitesse;
-            else
-                enemies->enemy[i].e.position.x -= enemies->enemy[i].vitesse;
+                if(enemies->enemy[i].Edirection == 'r')
+                    enemies->enemy[i].e.position.x += enemies->enemy[i].vitesse;
+                else
+                    enemies->enemy[i].e.position.x -= enemies->enemy[i].vitesse;
+        
         }
     }
 }
@@ -110,5 +113,43 @@ void collision_ennemy(Enemies *enemies, Hero *hero)
             position_absolue = 100;
         }
     }
+}
+/**
+* @brief intelligence artificielle des énnemies.
+* @param ennemies les ennemies  .
+* @param hero personnage initial .
+* @return Rien.
+*/
+void update_ennemy(Enemies *enemies, Hero *hero)
+{
+    int i, d;
+    Animation_Enemy (enemies);
+    for(i = 0; i < enemies->nombre; i++)
+    {
+        d = hero->e.position.x - enemies->enemy[i].e.position.x;
+        if ((d < 250) && d > 0 && position_absolue >600 && position_absolue <2340)
+        {
+            if (hero->frame != 9  )
+            {
+                enemies->enemy[i].state = FOLLOWING;
+                enemies->enemy[i].Edirection = 'r';
+            }
+        }
+        else
+        {
+            if ((-d < 250) && -d > 0 && position_absolue >600 && position_absolue <2340)
+            {
+                if (hero->frame != 9 )
+                {
+                    enemies->enemy[i].state = FOLLOWING;
+                    enemies->enemy[i].Edirection = 'l';
+                }
+            }
+
+            else
+                enemies->enemy[i].state = RETURN;
+        }
+    }
+
 }
 
