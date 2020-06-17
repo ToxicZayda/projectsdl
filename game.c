@@ -112,6 +112,8 @@ int Game(int *save)
     enemies.enemy[1] = init_enemy(20,1560,340);
     enemies.enemy[2] = init_enemy(20,2460,340);
     background = init_back("back.png");
+    Map = init_map("minimap.png");
+    herodot = init_dot("dot.png");
     intervalleH1 = 0, intervalleH2 = 0,intervalleE1 = 0, intervalleE2 = 0, decalage = 0,
       destination =  0, continuer = 1,position_absolue =100;
     init_hero(&hero1);
@@ -123,9 +125,13 @@ int Game(int *save)
     while (continuer)
     {
         aff_back(background);
+        aff_map(Map);
+        aff_dot(herodot); 
         aff_hero((&hero1));
+        Deplacer_dot(&herodot,&hero1);
         getInput(event, &continuer, &background,&hero1,save);
         collision_ennemy(&enemies,&hero1);
+        update_ennemy(&enemies,&hero1);
         Deplacer(&enemies);
         aff_enemies(&enemies);
                 saveGame(hero1,"save.txt",*save);
@@ -142,6 +148,8 @@ int Game(int *save)
 
 
     SDL_FreeSurface(background.imageDeFond);
+    SDL_FreeSurface(Map.map);
+    SDL_FreeSurface(herodot.fontdot);
     free_enemy(&enemies);
     free_hero(&hero1);
     SDL_FreeSurface(masque);
