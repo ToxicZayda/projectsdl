@@ -267,3 +267,40 @@ void animationEnigme(enigme *E,int end,int old)
 }
 
 
+void score (enigme *E)
+{
+	int i,tot=0;
+	SDL_Rect pos;
+	pos.x =1140 ;
+	pos.y=520;
+	SDL_Color colorBlack = {0, 0, 0}, colorGrey = {121, 121, 121}, colorGreen = {1, 121, 1}, colorRed = {219,8,8};
+	TTF_Font *police = TTF_OpenFont("Enigmes/wEnigme/Assyrian.ttf", 24);
+	SDL_Surface *textScore;
+	char scor[10];
+	int score=0;
+   E->objLeft = 10;
+
+
+
+
+
+    for (i=0;i<(E->n);i++)
+             {
+             	if (E->obj[i].clicked==0)
+             	tot++;
+              }
+
+    score = 50-(tot*10);
+   
+   sprintf(scor, "%d", score);
+	textScore = TTF_RenderText_Solid (police,scor,colorGrey);
+
+	SDL_BlitSurface(textScore, NULL, ecran, &pos);
+
+}
+	
+		  
+		
+
+
+
