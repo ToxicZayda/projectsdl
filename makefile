@@ -1,5 +1,5 @@
-prog:save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o enigmes.o main.o
-	gcc save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o enigmes.o main.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf
+prog:save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o
+	gcc save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf
 main.o:main.c
 	gcc -c main.c
 save.o:save.c
@@ -24,5 +24,7 @@ aEnigmes.o:aEnigmes.c
 	gcc -c aEnigmes.c
 jEnigme.o:jEnigme.c
 	gcc -c jEnigme.c
-enigmes.o:enigmes.c
-	gcc -c enigmes.c
+Enigmes.o:Enigmes.c
+	gcc -c Enigmes.c
+Enigme.o:Enigme.c
+	gcc -c Enigme.c

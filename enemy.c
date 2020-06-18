@@ -123,7 +123,7 @@ void collision_ennemy(Enemies *enemies, Hero *hero)
 void update_ennemy(Enemies *enemies, Hero *hero)
 {
     int i, d;
-    Animation_Enemy (enemies);
+   
     for(i = 0; i < enemies->nombre; i++)
     {
         d = hero->e.position.x - enemies->enemy[i].e.position.x;

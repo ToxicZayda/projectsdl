@@ -3,7 +3,8 @@
 #include "hero.h"
 #include "enemy.h"
 #include "aEnigmes.h"
-#include "Enigmes.h"
+#include "Enigme.h"
+#include "Enigmess.h"
 
 animated an;
 int MenuP()
@@ -104,8 +105,9 @@ int Game(int *save)
     Hero hero1;
     TTF_Init();
     masque = IMG_Load("mask.png");
-    int activer_enigme = 0,i;
+    int activer_enigme = 0,i,testt = 0;
     Mix_FreeMusic(music);
+enigme E;
     Enemies enemies;
     enemies.nombre = 3;
     enemies.enemy[0] = init_enemy(20,660,340);
@@ -136,6 +138,16 @@ int Game(int *save)
         aff_enemies(&enemies);
                 saveGame(hero1,"save.txt",*save);
         SDL_Flip(ecran);
+      if((hero1.e.position.x >= 451 && hero1.e.position.x <= 532) && testt != 1 )
+        {
+            eenigme_ja();
+            SDL_Flip(ecran);
+            SDL_Delay(2000);
+
+            testt = 1;
+
+        }
+
         if(CollisionParfaite(hero1)!=0)
         {
             activer_enigme = 1;
@@ -144,7 +156,9 @@ int Game(int *save)
     }
 
     if(activer_enigme)
-        Enigme_finale();
+      Enigme_finale();
+ 
+       
 
 
     SDL_FreeSurface(background.imageDeFond);

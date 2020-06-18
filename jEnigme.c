@@ -1,5 +1,18 @@
-#include "Enigmes.h"
+/**
 
+@file jEnigme.c
+@brief code de l'enigme nbr 2
+@date 05/06/2020
+@author Jasser 
+
+*/
+#include "Enigmess.h"
+
+/**
+@brief la fonction main de 2éme enigme
+@param rien
+@return retourner un entier
+*/
 
 int jEnigme()
 {
