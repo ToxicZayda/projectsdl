@@ -1,5 +1,5 @@
-prog:save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o
-	gcc save.o background.o hero.o input.o menu.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf
+prog:save.o background.o hero.o input.o menu.o rotozoom.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o
+	gcc save.o background.o hero.o input.o menu.o rotozoom.o game.o button.o enemy.o entity.o aEnigmes.o jEnigme.o Enigmes.o Enigme.o main.o -o prog -lSDL -lSDL_image -lSDL_mixer -lSDL_ttf -lSDL_gfx
 main.o:main.c
 	gcc -c main.c
 save.o:save.c
@@ -16,6 +16,8 @@ button.o:button.c
 	gcc -c button.c
 game.o:game.c
 	gcc -c game.c
+rotozoom.o:rotozoom.c
+	gcc -c rotozoom.c
 entity.o:entity.c
 	gcc -c entity.c
 enemy.o:enemy.c

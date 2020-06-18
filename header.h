@@ -18,7 +18,7 @@ typedef struct
 }minimap;
 
 minimap Map;
-
+int loading();
 int MenuController();
 int MenuLoad(int *save);
 int MenuMultiplayer();

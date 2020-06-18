@@ -1,3 +1,15 @@
+/**
+@file game.c
+@brief code de l'interaction de l'hero  
+@date 12/06/2020
+@author notre groupe
+
+*/
+
+
+
+
+
 #include "hero.h"
 #include "sdl.h"
 #include "menu.h"
@@ -33,6 +45,12 @@ void Animation_Personnage(Hero *hero)
     }
 
 }
+
+/**
+@brief fonction qui permet de trouver la couleur de pixel 
+@param entiers
+@return variable de type SDL_Color
+*/
 SDL_Color GetPixel(int X, int Y)
 {
     SDL_Color color;
@@ -47,7 +65,11 @@ SDL_Color GetPixel(int X, int Y)
     return (color);
 }
 
-
+/**
+@brief fonction qui permet de detecter une collision par pixel
+@param variable de type hero
+@return variable de type entier 
+*/
 int CollisionParfaite (Hero hero)
 {
     SDL_Rect pos [1] ;
@@ -140,7 +162,11 @@ void Deplacer_Hero(int vitesse, Hero *hero)
     position_absolue += vitesse;
 }
 
-//Fonction qui permet le scrolling du background quand l'héro atteint la moitié de l'écran
+/**
+@brief fonction qui permet l'avancement du background
+@param de type background et de type entier 
+@return rien
+*/
 void scrolling(Background *background, int vitesse)
 {
     background->positionFond.x += vitesse;

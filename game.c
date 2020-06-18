@@ -5,6 +5,9 @@
 #include "aEnigmes.h"
 #include "Enigme.h"
 #include "Enigmess.h"
+#include <SDL/SDL_rotozoom.h>
+ 
+#define TEMPS       25
 
 animated an;
 int MenuP()
@@ -47,6 +50,9 @@ int MenuP()
         souris(even, &destination, &continu, &m0);
         SDL_Flip(ecran);
     }
+
+     
+
     free_menu(&m0);
     TTF_CloseFont(police);
     TTF_Quit();
@@ -298,6 +304,7 @@ int MenuLoad(int *save)
         souris_MenuLoad(even, &destination, &continu, &m1,save);
         SDL_Flip(ecran);
     }
+    loading ();
     free_menu(&m1);
     SDL_Flip(ecran);
     TTF_CloseFont(police);
